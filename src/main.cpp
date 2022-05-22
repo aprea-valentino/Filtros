@@ -38,6 +38,14 @@ int main(int argc , char* argv[]){
 
 	if (filter == "plain")
 		plain(img, (unsigned char)p1);
+	else if (filter == "blackWhite")
+	{
+		blackWhite(img);
+	} 
+	else if (filter == "contrast")
+	{
+		contrast(img, p1);
+	}
 	
    	clock_gettime(CLOCK_REALTIME, &stop);
 

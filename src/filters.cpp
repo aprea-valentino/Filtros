@@ -10,8 +10,54 @@
 #define BLACK 0
 
 using namespace std;
-
+int verificar(int resultado)
+{
+	if (resultado > 255){
+		resultado = 255;
+	}
+	else if (resultado < 0)
+	{
+		resultado = 0;
+	} 
+	return resultado;
+}
 // COMPLETAR :)
+void blackWhite(ppm& img)
+{
+	for(int i = 0; i < img.height; i++)
+	{
+		for(int j = 0; j < img.width; j++)
+		{
+			int R = img.getPixel(i,j).r;
+			int G = img.getPixel(i,j).g;
+			int B = img.getPixel(i,j).b;
+			int resultado = (R+G+B)/3;
+			resultado = verificar(resultado);
+			img.setPixel(i,j, pixel(resultado,resultado,resultado));
+		}	
+	}	
+}
+void contrast(ppm& img, float contrast)
+{
+	int f = ((259*(contrast+255))/(255*(259-contrast)));
+
+	for(int i = 0; i < img.height; i++)
+	{
+		for(int j = 0; j < img.width; j++)
+		{
+			int R = img.getPixel(i,j).r;
+			int resultadoR = f*(R - 128) + 128;
+			resultadoR = verificar(resultadoR);
+			int G = img.getPixel(i,j).g;
+			int resultadoG = f*(G - 128) + 128;
+			resultadoG = verificar(resultadoG);
+			int B = img.getPixel(i,j).b;
+			int resultadoB = f*(B - 128) + 128;
+			resultadoB = verificar(resultadoB);
+			img.setPixel(i,j, pixel(resultadoR, resultadoG, resultadoB));
+		}
+	}
+}
 
 // Filtro plano como ejemplo
 
