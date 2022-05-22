@@ -46,6 +46,10 @@ int main(int argc , char* argv[]){
 	{
 		contrast(img, p1);
 	}
+	else if (filter == "brightness")
+	{
+		brightness(img, p1);
+	}
 	
    	clock_gettime(CLOCK_REALTIME, &stop);
 

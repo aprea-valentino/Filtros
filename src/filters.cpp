@@ -58,7 +58,29 @@ void contrast(ppm& img, float contrast)
 		}
 	}
 }
+void brightness(ppm& img, float b)
+{
+	for(int i = 0; i < img.height; i++)
+	{
+		for(int j = 0; j < img.width; j++)
+		{
+			int R = img.getPixel(i,j).r;
+			int resultadoR = R + 255 * b;
+			resultadoR = verificar(resultadoR);
+			resultadoR = trunc(resultadoR);
+			int G = img.getPixel(i,j).g;
+			int resultadoG = G + 255 * b;
+			resultadoG = verificar(resultadoG);
+			resultadoG = trunc(resultadoG);
+			int B = img.getPixel(i,j).b;
+			int resultadoB = B + 255 * b;
+			resultadoB = verificar(resultadoB);
+			resultadoB = trunc(resultadoB);
 
+			img.setPixel(i,j, pixel(resultadoR,resultadoG,resultadoB));
+		}
+	}
+}
 // Filtro plano como ejemplo
 
 void plain(ppm& img, unsigned char c)
