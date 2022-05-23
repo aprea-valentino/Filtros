@@ -56,6 +56,10 @@ int main(int argc , char* argv[]){
 	{
 		merge(img, img23, p1);
 	}
+	else if (filter == "shades")
+	{
+		shades(img, p1);
+	}
    	clock_gettime(CLOCK_REALTIME, &stop);
 
 	double accum;

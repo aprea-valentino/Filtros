@@ -111,7 +111,23 @@ void merge(ppm& img, ppm& img2, float alpha)
     }
 
 }
-
+void shades(ppm& img, unsigned char n){
+	int rang = 255/(n-1);
+	for(int i = 0; i < img.height; i++)
+	{
+		for(int j = 0; j < img.width; j++)
+		{
+			int r = img.getPixel(i,j).r;
+			int g = img.getPixel(i,j).g;
+			int b = img.getPixel(i,j).b;
+			int g1 = (r+g+b)/3;
+			int g2 = (g1/rang)*rang;
+			g2 = verificar(g2);
+			img.setPixel(i,j,pixel(g2,g2,g2).truncate());
+			
+		}
+	}
+}
 // Filtro plano como ejemplo
 
 void plain(ppm& img, unsigned char c)
