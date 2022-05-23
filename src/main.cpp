@@ -28,9 +28,11 @@ int main(int argc , char* argv[]){
 	unsigned int n = atoi(argv[2]);
 	float p1 = atof(argv[3]);
 	string img1(argv[4]);
-	string out = string(argv[5]);
+	string img2(argv[5]);
+	string out = string(argv[6]);
 	
 	ppm img(img1);
+	ppm img23(img2);
 	
 	cout << "Aplicando filtros"<< endl;
 	struct timespec start, stop;    	
@@ -50,7 +52,10 @@ int main(int argc , char* argv[]){
 	{
 		brightness(img, p1);
 	}
-	
+	else if (filter == "merge")
+	{
+		merge(img, img23, p1);
+	}
    	clock_gettime(CLOCK_REALTIME, &stop);
 
 	double accum;

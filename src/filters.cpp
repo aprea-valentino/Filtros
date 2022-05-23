@@ -6,10 +6,13 @@
 #include "filters.h"
 #include <thread>  
 #include <atomic>  
+#include "ppm.h"
 
 #define BLACK 0
 
 using namespace std;
+
+
 int verificar(int resultado)
 {
 	if (resultado > 255){
@@ -81,6 +84,34 @@ void brightness(ppm& img, float b)
 		}
 	}
 }
+
+void merge(ppm& img, ppm& img2, float alpha)
+{
+    float p2 = 1 - alpha;
+    for(int i = 0; i < img.height; i++)
+    {
+        for(int j = 0; j < img.width; j++)
+        {
+            int R1 = img.getPixel(i,j).r;
+            int G1 = img.getPixel(i,j).g;
+            int B1 = img.getPixel(i,j).b;
+            int R2 = img2.getPixel(i,j).r;
+            int G2 = img2.getPixel(i,j).g;
+            int B2 = img2.getPixel(i,j).b;
+
+            int resultadoR = (R1 * alpha) + (R2 * p2);
+            resultadoR = verificar(resultadoR);
+            int resultadoG = (G1 * alpha) + (G2 * p2);
+            resultadoG = verificar(resultadoG);
+            int resultadoB = (B1 * alpha) + (B2 * p2);
+            resultadoB = verificar(resultadoB);
+            
+			img.setPixel(i,j, pixel(resultadoR, resultadoG, resultadoB));
+        }
+    }
+
+}
+
 // Filtro plano como ejemplo
 
 void plain(ppm& img, unsigned char c)
