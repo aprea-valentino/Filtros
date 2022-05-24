@@ -60,6 +60,10 @@ int main(int argc , char* argv[]){
 	{
 		shades(img, p1);
 	}
+	else if (filter == "blur")
+	{
+		boxBlur(img);
+	}
    	clock_gettime(CLOCK_REALTIME, &stop);
 
 	double accum;

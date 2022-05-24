@@ -12,7 +12,24 @@
 
 using namespace std;
 
-
+float sumatoria(ppm& img, int i, int j, string rgb)
+{
+	float suma;
+	
+	if (rgb == "r")
+	{
+		suma = img.getPixel(i,j).r + img.getPixel(i+1,j).r + img.getPixel(i-1,j).r + img.getPixel(i,j+1).r + img.getPixel(i,j-1).r + img.getPixel(i+1,j+1).r + img.getPixel(i-1,j-1).r  + img.getPixel(i+1,j-1).r + img.getPixel(i-1,j+1).r;
+	}
+	else if (rgb == "g")
+	{
+		suma = img.getPixel(i,j).g + img.getPixel(i+1,j).g + img.getPixel(i-1,j).g + img.getPixel(i,j+1).g + img.getPixel(i,j-1).g + img.getPixel(i+1,j+1).g + img.getPixel(i-1,j-1).g + img.getPixel(i+1,j-1).g + img.getPixel(i-1,j+1).g;
+	}
+	else if (rgb == "b")
+	{
+		suma = img.getPixel(i,j).b + img.getPixel(i+1,j).b + img.getPixel(i-1,j).b + img.getPixel(i,j+1).b + img.getPixel(i,j-1).b + img.getPixel(i+1,j+1).b + img.getPixel(i-1,j-1).b + img.getPixel(i+1,j-1).b + img.getPixel(i-1,j+1).b;
+	}
+	return suma;	 
+}
 int verificar(int resultado)
 {
 	if (resultado > 255){
@@ -127,6 +144,28 @@ void shades(ppm& img, unsigned char n){
 			
 		}
 	}
+}
+void boxBlur(ppm &img)
+{
+	float rgod;
+	float ggod;
+	float bgod;
+	for(int i = 1; i < img.height-2; i++)
+	{
+		for(int j = 1; j < img.width-2; j++)
+		{
+			rgod = sumatoria(img, i, j, "r");
+			ggod = sumatoria(img, i,j,"g");
+			bgod = sumatoria(img,i,j,"b");
+			rgod = rgod / 9;
+			rgod = verificar(rgod);
+			ggod = ggod / 9;
+			ggod = verificar(ggod);
+			bgod = bgod / 9;
+			bgod = verificar(bgod);
+			img.setPixel(i,j,pixel(rgod,ggod,bgod));
+		}	
+	}	
 }
 // Filtro plano como ejemplo
 
