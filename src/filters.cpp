@@ -167,6 +167,38 @@ void boxBlur(ppm &img)
 		}	
 	}	
 }
+void frame(ppm& img, pixel color, int x)
+{
+	for(int i = 0; i < x; i++)//altura
+	{
+		for(int j = 0; j < img.width; j++)//anchura
+		{
+			img.setPixel(i,j,color);
+		}
+	}
+	for(int i = img.height - x; i < img.height; i++)//altura
+	{
+		for(int j = 0; j < img.width; j++)//anchura
+		{
+			img.setPixel(i,j,color);
+		}
+	}
+	for(int i = 0; i < img.height; i++)//altura
+	{
+		for(int j = 0; j < x; j++)//anchura
+		{
+			img.setPixel(i,j,color);
+		}
+	}
+	for(int i = 0; i < img.height; i++)//altura
+	{
+		for(int j = img.width - x ; j < img.width; j++)//anchura
+		{
+			img.setPixel(i,j,color);
+		}
+	}			
+			
+}
 // Filtro plano como ejemplo
 
 void plain(ppm& img, unsigned char c)

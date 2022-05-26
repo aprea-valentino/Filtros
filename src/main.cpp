@@ -28,11 +28,15 @@ int main(int argc , char* argv[]){
 	unsigned int n = atoi(argv[2]);
 	float p1 = atof(argv[3]);
 	string img1(argv[4]);
-	string img2(argv[5]);
-	string out = string(argv[6]);
-	
+	//string img2(argv[5]);
+	string out = string(argv[5]);
+    int r = atoi(argv[6]);
+	int g = atoi(argv[7]);
+	int b = atoi(argv[8]);
+	pixel color = pixel(r,g,b).truncate();
+
 	ppm img(img1);
-	ppm img23(img2);
+	//ppm img23(img2);
 	
 	cout << "Aplicando filtros"<< endl;
 	struct timespec start, stop;    	
@@ -54,7 +58,7 @@ int main(int argc , char* argv[]){
 	}
 	else if (filter == "merge")
 	{
-		merge(img, img23, p1);
+		//merge(img, img23, p1);
 	}
 	else if (filter == "shades")
 	{
@@ -64,6 +68,11 @@ int main(int argc , char* argv[]){
 	{
 		boxBlur(img);
 	}
+	else if (filter == "frame")
+	{
+		frame(img, color, p1);
+	}
+
    	clock_gettime(CLOCK_REALTIME, &stop);
 
 	double accum;
