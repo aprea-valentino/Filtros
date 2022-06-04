@@ -199,6 +199,50 @@ void frame(ppm& img, pixel color, int x)
 	}			
 			
 }
+void edgeDetection(ppm &img, ppm &img_target)
+{
+
+	blackWhite(img);
+	boxBlur(img);
+
+	for(int i = 1; i < img.height-1; i++)
+	{
+		for(int j = 1; j < img.width-1; j++)
+		{
+			pixel p_final = pixel();
+			pixel p0 = img.getPixel(i - 1, j - 1);
+			pixel p1 = img.getPixel(i - 1, j);
+			pixel p2 = img.getPixel(i - 1, j + 1);
+			pixel p3 = img.getPixel(i, j - 1);
+			pixel p4 = img.getPixel(i, j);
+			pixel p5 = img.getPixel(i, j + 1);
+			// movy, movx
+			pixel p6 = img.getPixel(i + 1, j - 1);
+			pixel p7 = img.getPixel(i + 1, j);
+			pixel p8 = img.getPixel(i + 1, j + 1);
+
+			unsigned int gxr = (p0.r - p2.r + 2 * p3.r - 2 * p5.r + p6.r - p8.r);
+			unsigned int gyr = (p0.r + 2 * p1.r + p2.r - p6.r - 2 * p7.r - p8.r);
+			p_final.r = sqrt(gxr * gxr + gyr * gyr);
+
+			unsigned int gxg = (p0.g - p2.g + 2 * p3.g - 2 * p5.g + p6.g - p8.g);
+			unsigned int gyg = (p0.g + 2 * p1.g + p2.g - p6.g - 2 * p7.g - p8.g);
+			p_final.g = sqrt(gxg * gxg + gyg * gyg);
+			
+			unsigned int gxb = (p0.b - p2.b + 2 * p3.b - 2 * p5.b + p6.b - p8.b);
+			unsigned int gyb = (p0.b + 2 * p1.b + p2.b - p6.b - 2 * p7.b - p8.b);
+			p_final.b = sqrt(gxb * gxb + gyb * gyb);
+			
+			p_final.truncate();
+			img_target.setPixel(i-1, j-1, p_final);
+		}	
+	}
+	img = img_target;
+	
+	
+
+}
+
 // Filtro plano como ejemplo
 
 void plain(ppm& img, unsigned char c)

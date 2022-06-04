@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <fstream>      // std::ofstream
 #define ONE_OVER_BILLION 1E-9
+#include <filesystem>
+namespace fs = std::filesystem;
 
 
 using namespace std;
@@ -27,12 +29,13 @@ int main(int argc , char* argv[]){
 	string filter = string(argv[1]);
 	unsigned int n = atoi(argv[2]);
 	float p1 = atof(argv[3]);
-	string img1(argv[4]);
+	string root = string(argv[4]);
+	string img1(argv[5]);
 	//string img2(argv[5]);
-	string out = string(argv[5]);
-    int r = atoi(argv[6]);
-	int g = atoi(argv[7]);
-	int b = atoi(argv[8]);
+	string out = string(argv[6]);
+    int r = atoi(argv[7]);
+	int g = atoi(argv[8]);
+	int b = atoi(argv[9]);
 	pixel color = pixel(r,g,b).truncate();
 
 	ppm img(img1);
@@ -72,6 +75,10 @@ int main(int argc , char* argv[]){
 	{
 		frame(img, color, p1);
 	}
+	else if (filter == "edgedetection")
+	{
+		edgeDetection(img, img);
+	}
 
    	clock_gettime(CLOCK_REALTIME, &stop);
 
@@ -81,7 +88,11 @@ int main(int argc , char* argv[]){
 
 	cout << "Escribiendo imagen" << endl;
 	img.write(out);	
-	    
+	string file;
+	std::string path = "./imgs";
+    for (const auto & entry : fs::directory_iterator(path)){
+        std::cout << entry.path() << std::endl;
+	}
 	cout << "Listo" << endl;
 	return 0;
 }
