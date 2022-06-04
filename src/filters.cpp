@@ -238,9 +238,41 @@ void edgeDetection(ppm &img, ppm &img_target)
 		}	
 	}
 	img = img_target;
-	
-	
+}
 
+void contrastThreads(ppm& img, float contrast, int i0, int i1)
+{
+	int f = ((259*(contrast+255))/(255*(259-contrast)));
+
+	for(i0; i0 < i1; i0++)
+	{
+		for(int j = 0; j < img.width; j++)
+		{
+			int R = img.getPixel(i0,j).r;
+			int resultadoR = f*(R - 128) + 128;
+			resultadoR = verificar(resultadoR);
+			int G = img.getPixel(i0,j).g;
+			int resultadoG = f*(G - 128) + 128;
+			resultadoG = verificar(resultadoG);
+			int B = img.getPixel(i0,j).b;
+			int resultadoB = f*(B - 128) + 128;
+			resultadoB = verificar(resultadoB);
+			img.setPixel(i0,j, pixel(resultadoR, resultadoG, resultadoB));
+		}
+	}
+}
+void constrastThreadMain(ppm& img, float contrast, int n){
+	int filas = int(img.height / n);
+	vector<thread> threads;
+	for (int i = 0; i < n; i++)
+	{
+		int inicio = i * filas;
+		int fin = (i + 1) * filas;
+		threads.push_back(thread(contrastThreads, ref(img), contrast, inicio, fin));
+	}
+	for (int i = 0; i < n; i++){
+		threads[i].join();
+	}
 }
 
 // Filtro plano como ejemplo

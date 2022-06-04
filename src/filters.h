@@ -23,5 +23,6 @@ void edgeDetection(ppm &img, ppm &img_target);
 void plain(ppm &img, unsigned char c);
 
 // MULTI-THREAD FILTERS
+void constrastThreadMain(ppm& img, float contrast, int n);
 
 #endif
