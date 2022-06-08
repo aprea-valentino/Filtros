@@ -20,7 +20,7 @@ int main(int argc , char* argv[]){
 	// Asumimos que Zoom no se puede encadenar
 
 	if(string(argv[1]) == "-help"){
-		cout << "Uso: ./main <filtro> <nthreads> <[p1]> <img1> <custom_output> <[p2]> <img2>" << endl;
+		cout << "Uso: ./main <filtro> <nthreads> <[p1]> <img1> <custom_output>" << endl;
 		return 0; 
 	}
 	
@@ -36,19 +36,19 @@ int main(int argc , char* argv[]){
 	struct timespec start, stop;    	
 	clock_gettime(CLOCK_REALTIME, &start);
 
-	if (filter == "plain")
+	if (filter == "plain"){
 		plain(img, (unsigned char)p1);
-	else if (filter == "blackWhite")
-	{
-		blackWhite(img);
-	} 
+	}
 	else if (filter == "contrast")
 	{
 		constrastThreadMain(img, p1, n);
 	}
-	else if (filter == "blur")
+	else if (filter == "edgedetection")
 	{
-		boxBlur(img);
+		blackWhiteThreadsMain(img, n);
+		boxBlurThreadsMain(img, n);
+		ppm img_target(img);
+		edgeDetectionThreadsMain(img, img_target, n);
 	}
 
    	clock_gettime(CLOCK_REALTIME, &stop);

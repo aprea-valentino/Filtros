@@ -24,5 +24,8 @@ void plain(ppm &img, unsigned char c);
 
 // MULTI-THREAD FILTERS
 void constrastThreadMain(ppm& img, float contrast, int n);
+void blackWhiteThreadsMain(ppm& img, int n);
+void boxBlurThreadsMain(ppm& img, int n);
+void edgeDetectionThreadsMain(ppm &img, ppm &img_target, int n);
 
 #endif
