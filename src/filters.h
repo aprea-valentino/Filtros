@@ -16,7 +16,7 @@ void contrast(ppm& img, float contrast);
 void brightness(ppm& img, float b);
 void shades(ppm& img, unsigned char n);
 void merge(ppm& img1, ppm& img2, float alpha);
-void frame(ppm& img, pixel color, int x);
+void frame(ppm& img, int c, int x);
 void boxBlur(ppm &img);
 void zoom(ppm &img, ppm &img_zoomed, int n);
 void edgeDetection(ppm &img, ppm &img_target);

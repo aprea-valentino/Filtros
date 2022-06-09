@@ -39,6 +39,10 @@ int main(int argc , char* argv[]){
 	if (filter == "plain"){
 		plain(img, (unsigned char)p1);
 	}
+	else if (filter == "blackWhite")
+	{
+		blackWhiteThreadsMain(img, n);
+	}
 	else if (filter == "contrast")
 	{
 		constrastThreadMain(img, p1, n);

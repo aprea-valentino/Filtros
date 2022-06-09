@@ -167,34 +167,34 @@ void boxBlur(ppm &img)
 		}	
 	}	
 }
-void frame(ppm& img, pixel color, int x)
+void frame(ppm& img, int c, int x)
 {
 	for(int i = 0; i < x; i++)//altura
 	{
 		for(int j = 0; j < img.width; j++)//anchura
 		{
-			img.setPixel(i,j,color);
+			img.setPixel(i,j, pixel(c,c,c).truncate());
 		}
 	}
 	for(int i = img.height - x; i < img.height; i++)//altura
 	{
 		for(int j = 0; j < img.width; j++)//anchura
 		{
-			img.setPixel(i,j,color);
+			img.setPixel(i,j,pixel(c,c,c).truncate());
 		}
 	}
 	for(int i = 0; i < img.height; i++)//altura
 	{
 		for(int j = 0; j < x; j++)//anchura
 		{
-			img.setPixel(i,j,color);
+			img.setPixel(i,j,pixel(c,c,c).truncate());
 		}
 	}
 	for(int i = 0; i < img.height; i++)//altura
 	{
 		for(int j = img.width - x ; j < img.width; j++)//anchura
 		{
-			img.setPixel(i,j,color);
+			img.setPixel(i,j,pixel(c,c,c).truncate());
 		}
 	}			
 			
@@ -269,6 +269,9 @@ void constrastThreadMain(ppm& img, float contrast, int n){
 	{
 		int inicio = i * filas;
 		int fin = (i + 1) * filas;
+		if (i == n-1){
+			fin = img.height;
+		}
 		threads.push_back(thread(contrastThreads, ref(img), contrast, inicio, fin));
 	}
 	for (int i = 0; i < n; i++){
@@ -299,6 +302,9 @@ void blackWhiteThreadsMain(ppm& img, int n){
 	{
 		int inicio = i * filas;
 		int fin = (i + 1) * filas;
+		if (i == n-1){
+			fin = img.height;
+		}
 		threads.push_back(thread(blackWhiteThreads, ref(img), inicio, fin));
 	}
 	for (int i = 0; i < n; i++){
@@ -365,6 +371,9 @@ void boxBlurThreadsMain(ppm& img, int n){
 	{
 		int inicio = i * filas;
 		int fin = (i + 1) * filas;
+		if (i == n-1){
+			fin = img.height;
+		}
 		threads.push_back(thread(boxBlurThreads, ref(img), inicio, fin));
 	}
 	for (int i = 0; i < n; i++){
@@ -425,7 +434,9 @@ void edgeDetectionThreadsMain(ppm &img, ppm &img_target, int n){
 	{
 		int inicio = i * filas;
 		int fin = (i + 1) * filas;
-
+		if (i == n-1){
+			fin = img.height;
+		}
 		threads.push_back(thread(edgeDetectionThreads, ref(img), ref(img_target),  inicio, fin));
 	}
 	for (int i = 0; i < n; i++){

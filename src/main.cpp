@@ -73,7 +73,7 @@ int main(int argc , char* argv[]){
 	}
 	else if (filter == "frame")
 	{
-		frame(img, color, p1);
+		frame(img, 2, p1);
 	}
 	else if (filter == "edgedetection")
 	{
