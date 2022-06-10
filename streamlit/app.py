@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import imageio
+import imageio.v2 as imageio
 import numpy as np
 from PIL import Image
 from io import BytesIO
@@ -13,13 +13,13 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 
 def show_image():
-    img = imageio.imread("../out/salida.ppm")
+    img = imageio.imread("../src/imgs/ashitaka.ppm")
     plt.imshow(img)
     st.pyplot()
 
 def run_filters(c, b, blur, bw):
 
-    cmd = '../main ' + filters + ' 1 ' + ps + ' ../imgs/ashitaka.ppm ../out/salida.ppm'
+    cmd = '..\main ' + "blackWhite" + ' 1 ' + "" + ' ../src/imgs/ashitaka.ppm ../src/out/salida.ppm'
     os.system(cmd)
    
 # Sidebar
