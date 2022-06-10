@@ -17,9 +17,29 @@ def show_image():
     plt.imshow(img)
     st.pyplot()
 
-def run_filters(c, b, blur, bw):
+def run_filters(c, b, blur, bw, frame, eDetection, m, s):
+    if c == True:
+        filtrosAplic += "contrast"
+        parametros += f'{c} '
 
-    cmd = '..\main ' + "blackWhite" + ' 1 ' + "" + ' ../src/imgs/ashitaka.ppm ../src/out/salida.ppm'
+    if b == True:
+        filtrosAplic += "brightness"
+        parametros += f'{b} '
+
+    if blur == True:
+        filtrosAplic += "blur"
+        parametros += " "
+
+    if bw == True:
+        filtrosAplic += "blackWhite"
+        parametros += " "
+        
+    if frame == True:
+        filtrosAplic += "frame"
+        parametros +=
+
+
+    cmd = '../src/main '  + '"'+ filtrosAplic + '" '+ "1" + '"'+ parametros + '" ' + '../src/imgs/ashitaka.ppm ../src/out/out.ppm ' + '0'
     os.system(cmd)
    
 # Sidebar
@@ -27,9 +47,13 @@ st.sidebar.header('Parámetros')
 
 c = st.sidebar.slider('Contraste',-100, 100, 0, 1, '%d')
 b = st.sidebar.slider('Brillo', -100, 100, 0, 1, '%d')
+m = st.sidebar.slider('Merge', -100, 100, 0, 1, '%d')
+s = st.sidebar.slider('Shades', +100, 100, 0, 1, '%d')
 
 blur = st.sidebar.checkbox('Box blur',value=False)
 bw = st.sidebar.checkbox('BlackWhite',value=False)
+frame = st.sidebar.checkbox('Frame', value=False)
+eDetection = st.sidear.checkbox('Edge detection', value=False)
 
 
 if st.sidebar.button('Aplicar'):
