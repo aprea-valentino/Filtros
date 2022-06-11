@@ -22,7 +22,7 @@ int main(int argc , char* argv[]){
 	// Asumimos que Zoom no se puede encadenar
 
 	if(string(argv[1]) == "-help"){
-		cout << "Uso: ./main <filtro> <nthreads> <[p1]> <[p2]> <img1> <custom_output> <img2>" << endl;
+		cout << "Uso: ./main <filtro> <nthreads> <[p1]> <[p2]> <img1> <img2> <custom_output>" << endl;
 		return 0; 
 	}
 	
@@ -31,10 +31,11 @@ int main(int argc , char* argv[]){
 	float p1 = atof(argv[3]);
     float p2 = atof(argv[4]);
 	string root = string(argv[5]);
-	string out = string(argv[6]);
+	string root2 = string(argv[6]);
+	string out = string(argv[7]);
 
 	ppm img(root);
-	//ppm img23(img2);
+	ppm img2(root2);
 	
 	cout << "Aplicando filtros"<< endl;
 	struct timespec start, stop;    	
@@ -42,21 +43,37 @@ int main(int argc , char* argv[]){
 
 	if (filter == "plain")
 		plain(img, (unsigned char)p1);
+		
 	else if (filter == "blackWhite")
-	{
-		blackWhite(img);
-	} 
+    {
+		if (n >= 2){
+			blackWhiteThreadsMain(img, n);
+		}
+		else{
+			blackWhite(img);
+			}
+	}
 	else if (filter == "contrast")
 	{
-		contrast(img, p1);
+		if (n > 1){
+			constrastThreadMain(img, p1, n);
+		}
+		else{
+			contrast(img, p1);
+			}
 	}
-	else if (filter == "brightness")
+	else if (filter == "blur")
 	{
-		brightness(img, p1);
+		if (n > 1){
+			boxBlurThreadsMain(img, n);
+		}
+		else{
+			boxBlur(img);
+			}
 	}
 	else if (filter == "merge")
 	{
-		//merge(img, img23, p1);
+		merge(img, img2, p1);
 	}
 	else if (filter == "shades")
 	{
@@ -68,11 +85,20 @@ int main(int argc , char* argv[]){
 	}
 	else if (filter == "frame")
 	{
-		frame(img, 2, p1);
+		frame(img, p2, p1);
 	}
 	else if (filter == "edgedetection")
 	{
-		edgeDetection(img, img);
+		if (n > 1){
+			blackWhiteThreadsMain(img, n);
+			boxBlurThreadsMain(img, n);
+			ppm img_target(img);
+			edgeDetectionThreadsMain(img, img_target, n);
+		}
+		else{
+			edgeDetection(img, img);
+			}
+	
 	}
 
    	clock_gettime(CLOCK_REALTIME, &stop);
@@ -83,11 +109,7 @@ int main(int argc , char* argv[]){
 
 	cout << "Escribiendo imagen" << endl;
 	img.write(out);	
-	string file;
-	std::string path = "./imgs";
-    for (const auto & entry : fs::directory_iterator(path)){
-        std::cout << entry.path() << std::endl;
-	}
+
 	cout << "Listo" << endl;
 	return 0;
 }
