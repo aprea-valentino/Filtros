@@ -22,23 +22,18 @@ int main(int argc , char* argv[]){
 	// Asumimos que Zoom no se puede encadenar
 
 	if(string(argv[1]) == "-help"){
-		cout << "Uso: ./main <filtro> <nthreads> <[p1]> <img1> <custom_output> <[p2]> <img2>" << endl;
+		cout << "Uso: ./main <filtro> <nthreads> <[p1]> <[p2]> <img1> <custom_output> <img2>" << endl;
 		return 0; 
 	}
 	
 	string filter = string(argv[1]);
 	unsigned int n = atoi(argv[2]);
 	float p1 = atof(argv[3]);
-	string root = string(argv[4]);
-	string img1(argv[5]);
-	//string img2(argv[5]);
+    float p2 = atof(argv[4]);
+	string root = string(argv[5]);
 	string out = string(argv[6]);
-    int r = atoi(argv[7]);
-	int g = atoi(argv[8]);
-	int b = atoi(argv[9]);
-	pixel color = pixel(r,g,b).truncate();
 
-	ppm img(img1);
+	ppm img(root);
 	//ppm img23(img2);
 	
 	cout << "Aplicando filtros"<< endl;

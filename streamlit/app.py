@@ -18,6 +18,9 @@ def show_image():
     st.pyplot()
 
 def run_filters(c, b, blur, bw, frame, eDetection, m, s):
+    filtrosAplic = ''
+    parametros = ''
+
     if c == True:
         filtrosAplic += "contrast"
         parametros += f'{c} '
@@ -36,8 +39,14 @@ def run_filters(c, b, blur, bw, frame, eDetection, m, s):
         
     if frame == True:
         filtrosAplic += "frame"
-        parametros +=
+        parametros += "30 30" 
 
+    if eDetection == True:
+        filtrosAplic += "edgedetection"
+        parametros += " "
+
+    filtrosAplic = filtrosAplic[0:-1]
+    parametros = parametros[0:-1]
 
     cmd = '../src/main '  + '"'+ filtrosAplic + '" '+ "1" + '"'+ parametros + '" ' + '../src/imgs/ashitaka.ppm ../src/out/out.ppm ' + '0'
     os.system(cmd)
@@ -47,18 +56,17 @@ st.sidebar.header('Parámetros')
 
 c = st.sidebar.slider('Contraste',-100, 100, 0, 1, '%d')
 b = st.sidebar.slider('Brillo', -100, 100, 0, 1, '%d')
-m = st.sidebar.slider('Merge', -100, 100, 0, 1, '%d')
-s = st.sidebar.slider('Shades', +100, 100, 0, 1, '%d')
+s = st.sidebar.slider('Shades', 1, 255, 0, 1, '%d')
 
 blur = st.sidebar.checkbox('Box blur',value=False)
 bw = st.sidebar.checkbox('BlackWhite',value=False)
 frame = st.sidebar.checkbox('Frame', value=False)
-eDetection = st.sidear.checkbox('Edge detection', value=False)
+eDetection = st.sidebar.checkbox('Edge detection', value=False)
 
 
 if st.sidebar.button('Aplicar'):
-    run_filters(c, b, blur, bw)
-
+    run_filters(c, b, blur, bw, frame, eDetection, s)
+    show_image()
 
 # Main layout
 st.title('Filtros de imagenes')
