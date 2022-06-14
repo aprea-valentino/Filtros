@@ -62,6 +62,10 @@ int main(int argc , char* argv[]){
 			contrast(img, p1);
 			}
 	}
+	else if (filter == "brightness")
+		{
+			brightness(img, p1);
+		}
 	else if (filter == "blur")
 	{
 		if (n > 1){
