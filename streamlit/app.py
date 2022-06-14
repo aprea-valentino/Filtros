@@ -16,9 +16,9 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 def show_image(inicio):
     if (inicio==True):
-        img = imageio.imread("C:/Users/crisedu10/Desktop/Mis_Cosas/C++/Filtros/src/imgs/ashitaka.ppm")
+        img = imageio.imread("../src/imgs/ashitaka.ppm")
     else:
-        img = imageio.imread("C:/Users/crisedu10/Desktop/Mis_Cosas/C++/Filtros/src/out/out.ppm")
+        img = imageio.imread("../src/out/out.ppm")
     plt.imshow(img)
     st.pyplot()
 
