@@ -38,86 +38,54 @@ int main(int argc , char* argv[]){
 	clock_gettime(CLOCK_REALTIME, &start);
      
 	DIR *dir; struct dirent *diread;
-    vector<string> archivos;
+    vector<string> arch;
     if ((dir = opendir(root.c_str())) != nullptr) {
         while ((diread = readdir(dir)) != nullptr) {
-            archivos.push_back(diread->d_name);
+            arch.push_back(diread->d_name);
         }
         closedir (dir);
     }
     
-    for(auto archivo : archivos){
-        string tipo; 
-        if (archivo.size() > 4){
-            tipo = archivo.substr(archivo.size() - 4, 4);
+    vector<string> archivos;
+    for(auto i : arch){
+        string tipo;
+        if (i.size() > 4){
+            tipo = i.substr(i.size() - 4, 4);
         } 
-        if (tipo == ".ppm"){   
-            ppm img(root + archivo);
-            
-            if (filter == "plain")
-                plain(img, (unsigned char)p1);
-            else if (filter == "blackWhite")
-            {
-                if (n >= 2){
-                    blackWhiteThreadsMain(img, n);
-                }
-                else{
-                    blackWhite(img);
-                    }
-            }
-            else if (filter == "contrast")
-            {
-                if (n > 1){
-                    constrastThreadMain(img, p1, n);
-                }
-                else{
-                    contrast(img, p1);
-                    }
-            }
-            else if (filter == "brightness")
-            {
-                brightness(img, p1);
-            }
-            //else if (filter == "merge")
-            //{
-                //merge(img, img23, p1);
-            //}
-            else if (filter == "shades")
-            {
-                shades(img, p1);
-            }
-            else if (filter == "blur")
-            {
-                if (n > 1){
-                    boxBlurThreadsMain(img, n);
-                }
-                else{
-                    boxBlur(img);
-                    }
-            }
-            else if (filter == "frame")
-            {
-                frame(img, p1, p2);
-            }
-            else if (filter == "edgedetection")
-            {
-                if (n > 1){
-                    blackWhiteThreadsMain(img, n);
-                    boxBlurThreadsMain(img, n);
-                    ppm img_target(img);
-                    edgeDetectionThreadsMain(img, img_target, n);
-                }
-                else{
-                    edgeDetection(img, img);
-                    }
-            
-            }
-            string outFinal = out + archivo;
-            cout << "Escribiendo imagen: " << archivo << endl;
-            img.write(outFinal);	    
-            cout << "Listo" << endl;
+        
+        if (tipo == ".ppm"){  
+            archivos.push_back(i);
         }
     }
+    if (archivos.size() < n){
+        n = archivos.size();
+    }
+
+	vector<thread> threads;
+    
+    int cant = int(archivos.size() / n);
+    for(int i = 0; i < n; i++){
+        vector<ppm> imagenes;
+        vector<string> imagenesN;
+        int inicio = i * cant;
+		int fin = ((i + 1) * cant) - 1;
+		if (i == n-1){
+			fin = archivos.size();
+		}
+        for(inicio; inicio < fin+1; inicio++){
+            if (inicio == fin){
+                break;
+            }
+            ppm img(root + archivos[inicio]);
+            string outfinal = out + archivos[inicio];
+            imagenesN.push_back(outfinal);
+            imagenes.push_back(img);
+        }
+        threads.push_back(thread(loaderFilters, filter, p1, p2, imagenes, imagenesN));
+    }
+    for (int i = 0; i < n; i++){
+		threads[i].join();
+	}
     
 
    	clock_gettime(CLOCK_REALTIME, &stop);

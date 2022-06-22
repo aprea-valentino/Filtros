@@ -7,6 +7,7 @@
 #include <thread>  
 #include <atomic>  
 #include "ppm.h"
+#include <filesystem>
 
 #define BLACK 0
 
@@ -67,14 +68,11 @@ void contrast(ppm& img, float contrast)
 		{
 			int R = img.getPixel(i,j).r;
 			int resultadoR = f*(R - 128) + 128;
-			resultadoR = verificar(resultadoR);
 			int G = img.getPixel(i,j).g;
 			int resultadoG = f*(G - 128) + 128;
-			resultadoG = verificar(resultadoG);
 			int B = img.getPixel(i,j).b;
 			int resultadoB = f*(B - 128) + 128;
-			resultadoB = verificar(resultadoB);
-			img.setPixel(i,j, pixel(resultadoR, resultadoG, resultadoB));
+			img.setPixel(i,j, pixel(resultadoR, resultadoG, resultadoB).truncate());
 		}
 	}
 }
@@ -444,6 +442,46 @@ void edgeDetectionThreadsMain(ppm &img, ppm &img_target, int n){
 	}
 }
 
+void loaderFilters(string filter, float p1, float p2, vector<ppm> imagenes, vector<string> imagenesN){
+	int count=0;
+	for (auto img : imagenes){
+		if (filter == "plain")
+                plain(img, (unsigned char)p1);
+		else if (filter == "blackWhite")
+		{
+			blackWhite(img);
+		}
+		else if (filter == "contrast")
+		{
+			contrast(img, p1);
+			
+		}
+		else if (filter == "brightness")
+		{
+			brightness(img, p1);
+		}
+		else if (filter == "shades")
+		{
+			shades(img, p1);
+		}
+		else if (filter == "blur")
+		{
+			boxBlur(img);
+		}
+		else if (filter == "frame")
+		{
+			frame(img, p1, p2);
+		}
+		else if (filter == "edgedetection")
+		{
+			edgeDetection(img, img);
+		}
+        img.write(imagenesN[count]);
+		count++;	    
+        cout << "Imagen Listo" << endl;
+	}
+}
+ 
 // Filtro plano como ejemplo
 
 void plain(ppm& img, unsigned char c)

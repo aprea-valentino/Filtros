@@ -28,4 +28,6 @@ void blackWhiteThreadsMain(ppm& img, int n);
 void boxBlurThreadsMain(ppm& img, int n);
 void edgeDetectionThreadsMain(ppm &img, ppm &img_target, int n);
 
+// LOADER
+void loaderFilters(string filter, float p1, float p2, vector<ppm> imagenes, vector<string> imagenesN);
 #endif
