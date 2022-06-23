@@ -13,6 +13,7 @@
 
 using namespace std;
 
+
 float sumatoria(ppm& img, int i, int j, string rgb)
 {
 	float suma;
@@ -31,6 +32,9 @@ float sumatoria(ppm& img, int i, int j, string rgb)
 	}
 	return suma;	 
 }
+
+
+
 int verificar(int resultado)
 {
 	if (resultado > 255){
@@ -60,21 +64,26 @@ void blackWhite(ppm& img)
 }
 void contrast(ppm& img, float contrast)
 {
-	int f = ((259*(contrast+255))/(255*(259-contrast)));
+	int r;
+    int g;
+    int b;
+    float c = contrast;
+    float f = (259 * (c + 255))/(255 * (259 - c));
 
-	for(int i = 0; i < img.height; i++)
-	{
-		for(int j = 0; j < img.width; j++)
-		{
-			int R = img.getPixel(i,j).r;
-			int resultadoR = f*(R - 128) + 128;
-			int G = img.getPixel(i,j).g;
-			int resultadoG = f*(G - 128) + 128;
-			int B = img.getPixel(i,j).b;
-			int resultadoB = f*(B - 128) + 128;
-			img.setPixel(i,j, pixel(resultadoR, resultadoG, resultadoB).truncate());
-		}
-	}
+    for(int i = 0; i < img.height; i++){
+
+        for(int j = 0; j < img.width; j++){
+			r = img.getPixel(i,j).r;
+           	g = img.getPixel(i,j).g;
+            b = img.getPixel(i,j).b;
+            r = f * (r-128) + 128;
+            g = f * (g-128) + 128;
+            b = f * (b-128) + 128;
+            
+            img.setPixel(i,j, pixel(r,g,b).truncate());
+        }
+    }
+    return;
 }
 void brightness(ppm& img, float b)
 {
@@ -240,22 +249,24 @@ void edgeDetection(ppm &img, ppm &img_target)
 
 void contrastThreads(ppm& img, float contrast, int i0, int i1)
 {
-	int f = ((259*(contrast+255))/(255*(259-contrast)));
+	int r;
+    int g;
+    int b;
+    float c = contrast;
+    float f = (259 * (c + 255))/(255 * (259 - c));
 
 	for(i0; i0 < i1; i0++)
 	{
 		for(int j = 0; j < img.width; j++)
 		{
-			int R = img.getPixel(i0,j).r;
-			int resultadoR = f*(R - 128) + 128;
-			resultadoR = verificar(resultadoR);
-			int G = img.getPixel(i0,j).g;
-			int resultadoG = f*(G - 128) + 128;
-			resultadoG = verificar(resultadoG);
-			int B = img.getPixel(i0,j).b;
-			int resultadoB = f*(B - 128) + 128;
-			resultadoB = verificar(resultadoB);
-			img.setPixel(i0,j, pixel(resultadoR, resultadoG, resultadoB));
+			r = img.getPixel(i0,j).r;
+           	g = img.getPixel(i0,j).g;
+            b = img.getPixel(i0,j).b;
+            r = f * (r-128) + 128;
+            g = f * (g-128) + 128;
+            b = f * (b-128) + 128;
+            
+            img.setPixel(i0,j, pixel(r,g,b).truncate());
 		}
 	}
 }

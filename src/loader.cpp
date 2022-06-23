@@ -92,7 +92,7 @@ int main(int argc , char* argv[]){
 
 	double accum;
 	accum = ( stop.tv_sec - start.tv_sec ) + ( stop.tv_nsec - start.tv_nsec ) * ONE_OVER_BILLION;
-
+    
     cout << accum;
     cout << " s" << endl;
 	return 0;

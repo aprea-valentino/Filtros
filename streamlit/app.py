@@ -74,7 +74,7 @@ aplicado = False
 # Sidebar
 st.sidebar.header('Parámetros')
 
-c = st.sidebar.slider('Contraste', 0, 100, 0, 1, '%d')
+c = st.sidebar.slider('Contraste', -225, 255, 0, 1, '%d')
 b = st.sidebar.slider('Brillo', 0, 100, 0, 1, '%d')
 s = st.sidebar.slider('Shades', 0, 255, 0, 1, '%d')
 threads = st.sidebar.slider('Threads', 1, 32, 1, 1, '%d')

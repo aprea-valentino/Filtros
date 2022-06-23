@@ -46,7 +46,7 @@ int main(int argc , char* argv[]){
 		
 	else if (filter == "blackWhite")
     {
-		if (n >= 2){
+		if (n > 1){
 			blackWhiteThreadsMain(img, n);
 		}
 		else{
@@ -110,7 +110,7 @@ int main(int argc , char* argv[]){
 	double accum;
 	accum = ( stop.tv_sec - start.tv_sec ) + ( stop.tv_nsec - start.tv_nsec ) * ONE_OVER_BILLION;
 	printf("%lf s\n", accum);
-
+	
 	cout << "Escribiendo imagen" << endl;
 	img.write(out);	
 
